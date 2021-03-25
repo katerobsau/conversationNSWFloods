@@ -68,6 +68,8 @@ all_return_df <- all_return_df %>%
 saveRDS(all_return_df, output_filename_rl_rds)
 write_csv(all_return_df %>% filter(rp < 500), output_filename_rl_csv)
 
+## some basic plots
+
 ggplot(data = all_return_df %>% 
          filter(rp < 100)) +
   geom_jitter(aes(x= long_round, y = lat_round, 
@@ -89,40 +91,42 @@ ggplot(data = all_return_df %>%
   geom_histogram(aes(x = rl)) +
   facet_grid(~rp)
 
-# all_daily_return_wide <- all_return_df %>%
-#   pivot_wider(names_from = rp, values_from = rl)
+# old code
 
-todays_value <- 100
-last_time_greater <- max_df %>%
-  filter(id == ids[id_num] & 
-           max_prcp > 0) %>%
-  mutate(max_prcp = max_prcp / 10) %>%
-  filter(max_prcp > todays_value) %>%
-  filter(year == max(year)) %>%
-  pull(year)
-
-# %% percent of annual rainfall
-
-
-# distbn_df <-  data.frame(x=x, 
-#                          pdf=density_y,
-#                          cdf = cdf_y)
-# ggplot(distbn_df)  +
-#   geom_line(aes(x = x,  y = pdf))
+# # all_daily_return_wide <- all_return_df %>%
+# #   pivot_wider(names_from = rp, values_from = rl)
 # 
-# ggplot(distbn_df)  +
-#   geom_line(aes(x = x,  y = cdf))
-
-return_level_plot <- ggplot()  +
-  geom_ribbon(data=  return_df, aes(x = rp, ymin = rl_low, ymax= rl_upp),  alpha = 0.2)  +
-  geom_line(data = return_df, aes(x = rp, y = rl)) +
-  # geom_line(data = distbn_df, aes(x = 1/(1-cdf),  y = x), col = "red") +
-  geom_point(data = emp_return_df, aes(x = `Return Period`, 
-                                       y = `Return Level`)) +
-  scale_x_log10() +
-  theme_bw() + 
-  ylab("Return Rainfall Level (mm)") + 
-  xlab("Return Period") +
-  ggtitle("Return Period of Extreme Daily Rainfall Events")
-return_level_plot
-saveRDS(return_level_plot, "return_plot.rds")
+# todays_value <- 100
+# last_time_greater <- max_df %>%
+#   filter(id == ids[id_num] & 
+#            max_prcp > 0) %>%
+#   mutate(max_prcp = max_prcp / 10) %>%
+#   filter(max_prcp > todays_value) %>%
+#   filter(year == max(year)) %>%
+#   pull(year)
+# 
+# # %% percent of annual rainfall
+# 
+# 
+# # distbn_df <-  data.frame(x=x, 
+# #                          pdf=density_y,
+# #                          cdf = cdf_y)
+# # ggplot(distbn_df)  +
+# #   geom_line(aes(x = x,  y = pdf))
+# # 
+# # ggplot(distbn_df)  +
+# #   geom_line(aes(x = x,  y = cdf))
+# 
+# return_level_plot <- ggplot()  +
+#   geom_ribbon(data=  return_df, aes(x = rp, ymin = rl_low, ymax= rl_upp),  alpha = 0.2)  +
+#   geom_line(data = return_df, aes(x = rp, y = rl)) +
+#   # geom_line(data = distbn_df, aes(x = 1/(1-cdf),  y = x), col = "red") +
+#   geom_point(data = emp_return_df, aes(x = `Return Period`, 
+#                                        y = `Return Level`)) +
+#   scale_x_log10() +
+#   theme_bw() + 
+#   ylab("Return Rainfall Level (mm)") + 
+#   xlab("Return Period") +
+#   ggtitle("Return Period of Extreme Daily Rainfall Events")
+# return_level_plot
+# # saveRDS(return_level_plot, "return_plot.rds")
